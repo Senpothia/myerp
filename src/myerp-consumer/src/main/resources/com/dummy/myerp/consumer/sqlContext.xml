@@ -94,23 +94,23 @@
 		
 		<property name="SQLgetLastSequence">
 			<value>
-				SELECT * FROM myerp.sequence.ecriture.comptable
+				SELECT * FROM myerp.sequence_ecriture_comptable
 				WHERE journal_code= :code
-				AND annee: annee
+				AND annee= :annee
 			</value>
 		</property>
 		
 		<property name="SQLgetLastSequenceValue">
 			<value>
-				SELECT derniere_valeur FROM myerp.sequence.ecriture.comptable
+				SELECT derniere_valeur FROM myerp.sequence_ecriture_comptable
 				WHERE journal_code= :code
-				AND annee: annee
+				AND annee= :annee
 			</value>
 		</property>
 		
 		<property name="SQLinsertSequenceComptable">
 			<value>
-				INSERT INTO myerp.sequence_ecriture (
+				INSERT INTO myerp.sequence_ecriture_comptable (
 				journal_code, annee, derniere_valeur
 				) VALUES (
 				:journal_code, :annee, :derniere_valeur

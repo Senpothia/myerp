@@ -1,6 +1,7 @@
 package com.dummy.myerp.business.impl.manager;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +34,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	 */
 	public ComptabiliteManagerImpl() {
 	}
+	
+	
 
 	// ==================== Getters/Setters ====================
 	@Override
@@ -72,37 +75,13 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		 */
 
 		JournalComptable journal = pEcritureComptable.getJournal();
-		Date date = pEcritureComptable.getDate();
+		int annee = getYear(pEcritureComptable);
 		String journalCode = journal.getCode();
-		@SuppressWarnings("deprecation")
-		int annee = date.getYear();
-		SequenceEcritureComptable sequence = getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee);
-		String reference;
-		int derniere_valeur;
-
-		if (sequence == null) {
-			derniere_valeur = 1;
-			sequence = new SequenceEcritureComptable(annee, derniere_valeur, journalCode);
-
-		} else {
-
-			derniere_valeur = sequence.getDerniereValeur() + 1;
-			sequence.setDerniereValeur(derniere_valeur);
-
-		}
-
-		String numero = String.valueOf(derniere_valeur);
-		int nombre = numero.length();
-
-		while (nombre < 5) {
-
-			numero = "0" + numero;
-			nombre = numero.length();
-		}
-
-		reference = journalCode + "-" + annee + "/" + numero;
-		getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence);
-		
+		//SequenceEcritureComptable sequence = getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee);
+		SequenceEcritureComptable sequence = findSequence(journal, annee);
+		String reference = referenceBuilderSetter(annee, sequence, journalCode);
+		saveSequence(sequence);
+		//getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence);
 
 	}
 
@@ -118,7 +97,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
 	/**
 	 * Vérifie que l'Ecriture comptable respecte les règles de gestion unitaires,
-	 * c'est à dire indépendemment du contexte (unicité de la référence, exercie
+	 * c'est à dire indépendemment du contexte (unicité de la référence, exerce
 	 * comptable non cloturé...)
 	 *
 	 * @param pEcritureComptable -
@@ -185,32 +164,34 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
 					"La date de l'écriture comptable doit être définie");
 
-		}
+		} else {
 
-		@SuppressWarnings("deprecation")
-		int annee = date.getYear();
-
-		try {
-
-			String[] arrSplit1 = reference.split("-");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int annee = calendar.getWeekYear();
 
 			try {
 
-				String[] arrSplit2 = arrSplit1[1].split("/");
+				String[] arrSplit1 = reference.split("-");
 
-				if (String.valueOf(annee).equals(arrSplit2[0])) {
+				try {
 
-					throw new FunctionalException(
+					String[] arrSplit2 = arrSplit1[1].split("/");
 
-							"La référence de l'écriture comptable doit comporter l'année. Exemple: XX-AAAA/#####.");
+					if (!String.valueOf(annee).equals(arrSplit2[0])) {
+
+						throw new FunctionalException(
+
+								"La référence de l'écriture comptable doit comporter l'année. Exemple: XX-AAAA/#####.");
+					}
+
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
 
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
 
 	}
@@ -288,5 +269,57 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		} finally {
 			getTransactionManager().rollbackMyERP(vTS);
 		}
+	}
+	
+	public SequenceEcritureComptable findSequence(JournalComptable journal, int annee) {
+		
+		SequenceEcritureComptable sequence = getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee);
+		return sequence;
+	}
+	
+	public void saveSequence(SequenceEcritureComptable sequence) {
+		
+		getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence);
+		
+	}
+	
+	public int getYear(EcritureComptable pEcritureComptable) {
+		
+		Date date = pEcritureComptable.getDate();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int annee = calendar.getWeekYear();
+		
+		return annee;
+	}
+	
+	public String referenceBuilderSetter(int annee, SequenceEcritureComptable sequence, String journalCode) {
+		
+		String reference;
+		int derniere_valeur;
+
+		if (sequence == null) {
+			derniere_valeur = 1;
+			sequence = new SequenceEcritureComptable(annee, derniere_valeur, journalCode);
+
+		} else {
+
+			derniere_valeur = sequence.getDerniereValeur() + 1;
+			sequence.setDerniereValeur(derniere_valeur);
+
+		}
+
+		String numero = String.valueOf(derniere_valeur);
+		int nombre = numero.length();
+
+		while (nombre < 5) {
+
+			numero = "0" + numero;
+			nombre = numero.length();
+		}
+
+		reference = journalCode + "-" + annee + "/" + numero;
+		return reference;
+		
 	}
 }

@@ -11,6 +11,8 @@ import org.junit.Test;
 
 public class CompteComptableTest {
 	
+	// ADD
+	
 	private CompteComptable compte1;
 	private CompteComptable compte2;
 	private CompteComptable compte3;

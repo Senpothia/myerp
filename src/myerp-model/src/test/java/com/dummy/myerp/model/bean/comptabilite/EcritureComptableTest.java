@@ -13,7 +13,7 @@ public class EcritureComptableTest {
 	private EcritureComptable vEcritureNonEquilibree;
 
 	@Before
-	public void setUp() {
+	public void setUp() {  // ADD
 
 		vEcritureEquilibree = new EcritureComptable();
 

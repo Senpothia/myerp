@@ -32,8 +32,7 @@ public abstract class AbstractDbConsumer {
      */
     protected AbstractDbConsumer() {
         super();
-    }
-
+    } 
 
     // ==================== Getters/Setters ====================
     /**

@@ -24,7 +24,9 @@ public class EcritureComptable {
     /** Journal comptable */
     @NotNull private JournalComptable journal;
     /** The Reference. */
-    @Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")
+    //@Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")   // Version originale erronée!!!
+   // @Pattern(regexp = "[A-Z][A-Z]-\\d{4}/\\d{5}")	// Version corrigée - 1er essai
+    @Pattern(regexp = "[A-Z]{2}-\\d{4}/\\d{5}")	// Version corrigée
     private String reference;
     /** The Date. */
     @NotNull private Date date;
@@ -47,12 +49,14 @@ public class EcritureComptable {
     public void setId(Integer pId) {
         id = pId;
     }
+    
     public JournalComptable getJournal() {
         return journal;
     }
     public void setJournal(JournalComptable pJournal) {
         journal = pJournal;
     }
+    
     public String getReference() {
         return reference;
     }
