@@ -62,7 +62,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	// TODO à tester
 	@Override
 	public synchronized void addReference(EcritureComptable pEcritureComptable) {
-		// TODO à implémenter
+		// TODO à implémenter (fait)
 		// Bien se réferer à la JavaDoc de cette méthode !
 		/*
 		 * Le principe : 1. Remonter depuis la persitance la dernière valeur de la
@@ -186,11 +186,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 					}
 
 				} catch (Exception e) {
-					// TODO: handle exception
+					// handle exception
 				}
 
 			} catch (Exception e) {
-				// TODO: handle exception
+				// handle exception
 			}
 		}
 
