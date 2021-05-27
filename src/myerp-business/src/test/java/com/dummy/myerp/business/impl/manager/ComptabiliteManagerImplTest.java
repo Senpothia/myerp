@@ -148,7 +148,7 @@ public class ComptabiliteManagerImplTest {
 	 * Exception attendue: FunctionalException("L'écriture comptable n'est pas équilibrée.")
 	 */
 
-	@Test//(expected = FunctionalException.class)
+	@Test(expected = FunctionalException.class)
 	public void checkEcritureComptableUnitRG2() throws Exception {
 		
 		vEcritureComptable.getListLigneEcriture()
