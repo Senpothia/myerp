@@ -92,13 +92,7 @@
 			</value>
 		</property>
 		
-		<property name="SQLgetLastSequence">
-			<value>
-				SELECT * FROM myerp.sequence_ecriture_comptable
-				WHERE journal_code= :code
-				AND annee= :annee
-			</value>
-		</property>
+
 		
 		<property name="SQLgetLastSequenceValue">
 			<value>

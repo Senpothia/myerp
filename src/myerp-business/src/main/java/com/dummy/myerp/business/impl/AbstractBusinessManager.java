@@ -26,7 +26,6 @@ public abstract class AbstractBusinessManager {
 
     /**
      * Méthode de configuration de la classe
-     *
      * @param pBusinessProxy      -
      * @param pDaoProxy           -
      * @param pTransactionManager -
@@ -57,7 +56,7 @@ public abstract class AbstractBusinessManager {
      *
      * @return {@link DaoProxy}
      */
-    protected DaoProxy getDaoProxy() {
+    public DaoProxy getDaoProxy() {
         return daoProxy;
     }
 
