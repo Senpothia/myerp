@@ -12,7 +12,7 @@ import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.CompteComptab
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.EcritureComptableRM;
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.JournalComptableRM;
 import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.LigneEcritureComptableRM;
-import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.SequenceEcritureRM;
+import com.dummy.myerp.consumer.dao.impl.db.rowmapper.comptabilite.SequenceEcritureComptableRM;
 import com.dummy.myerp.consumer.db.AbstractDbConsumer;
 import com.dummy.myerp.consumer.db.DataSourcesEnum;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
@@ -286,35 +286,48 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 		vJdbcTemplate.update(SQLdeleteListLigneEcritureComptable, vSqlParams);
 	}
 
+	/** SQLgetLastSequence */
+	/*
+	private static String SQLgetLastSequenceValue;
+
 	public static void setSQLgetLastSequenceValue(String SQLgetLastSequenceValue) {
 		ComptabiliteDaoImpl.SQLgetLastSequenceValue = SQLgetLastSequenceValue;
 	}
+	*/
 
-	/** SQLgetLastSequence */
-	private static String SQLgetLastSequenceValue;
+	private static String SQLgetSequenceEcritureComptable;
 
-
+	public static void setSQLgetSequenceEcritureComptable(String SQLgetSequenceEcritureComptable) {
+		ComptabiliteDaoImpl.SQLgetSequenceEcritureComptable = SQLgetSequenceEcritureComptable;
+	}
 
 	@Override
 	public SequenceEcritureComptable getLastSequence(JournalComptable journal, int annee) {
 
-		String codeJournal = journal.getCode();
+		String journal_code = journal.getCode();
 		NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
 		MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
-		vSqlParams.addValue("code", codeJournal);
+		vSqlParams.addValue("journal_code", journal_code);
 		vSqlParams.addValue("annee", annee);
-		return vJdbcTemplate.query(SQLgetLastSequenceValue, new SequenceEcritureRM()).get(0);
-		
+		SequenceEcritureComptableRM vRM= new SequenceEcritureComptableRM();
+		SequenceEcritureComptable vBean;
+		try {
+			vBean = vJdbcTemplate.queryForObject(SQLgetSequenceEcritureComptable, vSqlParams, vRM);
+		}catch (EmptyResultDataAccessException vException){
+			return null;
+		}
+		return vBean;
+
 	}
+
+
+
+	/** SQLinsertSequenceComptable */
+	private static String SQLinsertSequenceComptable;
 
 	public static void setSQLinsertSequenceComptable(String SQLinsertSequenceComptable) {
 		ComptabiliteDaoImpl.SQLinsertSequenceComptable = SQLinsertSequenceComptable;
 	}
-
-	/** SQLinsertSequenceComptable */
-	private static String SQLinsertSequenceComptable;
-	
-	
 
 	@Override
 	public void insertSequenceEcritureComptable(SequenceEcritureComptable sequence) {

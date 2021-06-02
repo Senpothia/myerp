@@ -91,14 +91,24 @@
 				WHERE ecriture_id = :ecriture_id
 			</value>
 		</property>
-		
 
-		
+		<!--
 		<property name="SQLgetLastSequenceValue">
 			<value>
 				SELECT derniere_valeur FROM myerp.sequence_ecriture_comptable
-				WHERE journal_code= :code
-				AND annee= :annee
+				WHERE journal_code = :code
+				AND annee = :annee
+			</value>
+		</property>
+
+		-->
+
+
+		<property name="SQLgetSequenceEcritureComptable">
+			<value>
+				SELECT * FROM myerp.sequence_ecriture_comptable
+				WHERE journal_code = :journal_code
+				AND annee = :annee
 			</value>
 		</property>
 		
