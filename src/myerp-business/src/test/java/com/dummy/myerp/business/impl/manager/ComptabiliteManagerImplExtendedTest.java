@@ -40,7 +40,6 @@ public class ComptabiliteManagerImplExtendedTest {
     @Mock
      BusinessProxy businessProxy;
 
-
     DaoProxyImpl daoProxy;
 
     @Mock
@@ -81,21 +80,20 @@ public class ComptabiliteManagerImplExtendedTest {
 
     }
 
+    /**
+     * Test des l'appels aux méthodes findSequence() et saveSequence()
+     * getLasSequence() est appelée à l'interieur de la méthode findSequence avec deux arguments
+     * La méthode est appelée sur le mock de comptabiliteDao
+     * La methode insertSeqenceEcritureComptable est appelée sur le mock de comptabiliteDao
+     * avec l'argument sequence retourne par When ThenReturn
+     */
     @Test
     public void invocationFindSequenceMethodTest() {
 
-        // Mockito.when(this.manager.findSequence(journal, annee)).thenReturn(sequence);
-        //Mockito.when(this.manager.getDaoProxy()).thenReturn(daoProxy);
-        //Mockito.when(daoProxy.getComptabiliteDao()).thenReturn(comptabiliteDao);
         Mockito.when(this.manager.getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee)).thenReturn(sequence);
-        // boolean retour = manager.testCallback();
-
-        // assertTrue(retour);
-        // when(findSequence(journal, annee).check(3)).thenReturn(true);
-        // manager.addReference(ecriture);
-        // verify(manager, times(1)).findSequence(journal, annee);
-        // manager.addReference(null);
-
+        manager.addReference(ecriture);
+        Mockito.verify(comptabiliteDao).getLastSequence(journal,annee);
+        Mockito.verify(comptabiliteDao).insertSequenceEcritureComptable(sequence);
     }
 
 }

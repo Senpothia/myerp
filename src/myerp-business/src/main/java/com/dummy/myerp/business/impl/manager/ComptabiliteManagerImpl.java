@@ -77,11 +77,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		JournalComptable journal = pEcritureComptable.getJournal();
 		int annee = getYear(pEcritureComptable);
 		String journalCode = journal.getCode();
-		//SequenceEcritureComptable sequence = getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee);
 		SequenceEcritureComptable sequence = findSequence(journal, annee);
 		String reference = referenceBuilderSetter(annee, sequence, journalCode);
+		//TODO (perso) corriger la méthode pour mise à jour de la sequence
 		saveSequence(sequence);
-		//getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence);
 
 	}
 
