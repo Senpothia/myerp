@@ -98,7 +98,15 @@ public interface ComptabiliteDao {
      * 
      */
     void insertSequenceEcritureComptable(SequenceEcritureComptable sequence);
-    
-   
-    
+
+    /**
+     * Met à jour une sequence d'écriture comptable
+     *
+     * @param  derniere_valeur
+     * @param  journal_comptable
+     * @param  annee
+     */
+
+    void updateSequenceEcritureComptable(SequenceEcritureComptable sequence, int derniere_valeur);
+
 }

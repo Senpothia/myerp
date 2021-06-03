@@ -80,7 +80,39 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 		Assert.assertTrue(like(expectedSequence,sequence));
 	}
 
+	@Test
+	public void  updateSequenceEcritureComptableTest(){
 
+		List<JournalComptable> journaux = manager.getListJournalComptable();
+		System.out.println("taille liste journaux: " + journaux.size());
+		int annee = 2016;
+		String code = "AC";
+		JournalComptable journal = null;
+		boolean finded = false;
+		int i = 0;
+		while (!finded){
+
+			if (journaux.get(i).getCode().equals(code)) {
+				journal = journaux.get(i);
+				finded = true;
+			}
+			i++;
+		}
+		System.out.println("code journal = " + journal.getCode());
+		System.out.println("libellé journal = " + journal.getLibelle());
+
+		SequenceEcritureComptable sequence = manager.findSequence(journal, 2016);
+		System.out.println("seq: Code_journal: " + sequence.getJournalCode());
+		System.out.println("seq: année: " + sequence.getAnnee());
+		System.out.println("seq: dernière valeur: " + sequence.getDerniereValeur());
+		int derniere_valeur = sequence.getDerniereValeur();
+		derniere_valeur++;
+		manager.updateSequence(derniere_valeur, sequence);
+		SequenceEcritureComptable sequenceAjout = manager.findSequence(journal, 2016);
+		int derniere_valeur_a_jour = sequenceAjout.getDerniereValeur();
+		Assert.assertEquals(derniere_valeur++,derniere_valeur_a_jour);
+
+	}
 
 
 

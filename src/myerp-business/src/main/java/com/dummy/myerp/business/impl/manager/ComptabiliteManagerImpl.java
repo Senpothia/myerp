@@ -59,7 +59,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	/**
 	 * {@inheritDoc}
 	 */
-	// TODO à tester
+	// TODO à tester (fait - revoir saveSequence()
 	@Override
 	public synchronized void addReference(EcritureComptable pEcritureComptable) {
 		// TODO à implémenter (fait)
@@ -78,9 +78,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		int annee = getYear(pEcritureComptable);
 		String journalCode = journal.getCode();
 		SequenceEcritureComptable sequence = findSequence(journal, annee);
+		int derniere_valeur = sequence.getDerniereValeur();
+		derniere_valeur++;
 		String reference = referenceBuilderSetter(annee, sequence, journalCode);
 		//TODO (perso) corriger la méthode pour mise à jour de la sequence
-		saveSequence(sequence);
+		updateSequence(derniere_valeur, sequence);
 
 	}
 
@@ -276,9 +278,9 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		return sequence;
 	}
 	
-	public void saveSequence(SequenceEcritureComptable sequence) {
+	public void updateSequence(int derniere_valeur, SequenceEcritureComptable sequence) {
 		
-		getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence);
+		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(sequence, derniere_valeur);
 		
 	}
 	
