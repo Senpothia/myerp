@@ -140,6 +140,14 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 	}
 
+	@Test
+	public void saveSequence(){
 
+		SequenceEcritureComptable sequence = new SequenceEcritureComptable();
+		sequence.setDerniereValeur(1);
+		sequence.setAnnee(2000);
+		sequence.setJournalCode("AC");
+		manager.insertSequence(sequence);
+	}
 
 }

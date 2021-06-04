@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -277,7 +278,19 @@ public class ComptabiliteManagerImplTest {
 		assertEquals(EXPECTED_REF, reference);
 		
 	}
-	
+
+	@Test
+	public void referenceBuilderSetterSequenceNulle(){
+
+		SequenceEcritureComptable sequenceNull = null;
+		String code_journal = "AC";
+		int annee = 2000;
+		String EXPECTED_REF = "AC-2000/00001";
+		String reference = manager.referenceBuilderSetter(annee, sequenceNull, code_journal);
+		System.out.println("Reference avec sequence nulle: " + reference);
+		Assert.assertEquals(EXPECTED_REF, reference);
+
+	}
 	
 
 }

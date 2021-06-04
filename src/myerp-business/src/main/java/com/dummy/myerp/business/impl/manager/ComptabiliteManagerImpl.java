@@ -78,11 +78,21 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		int annee = getYear(pEcritureComptable);
 		String journalCode = journal.getCode();
 		SequenceEcritureComptable sequence = findSequence(journal, annee);
-		int derniere_valeur = sequence.getDerniereValeur();
-		derniere_valeur++;
-		String reference = referenceBuilderSetter(annee, sequence, journalCode);
-		//TODO (perso) corriger la méthode pour mise à jour de la sequence
-		updateSequence(derniere_valeur, sequence);
+		if (sequence != null){
+			int derniere_valeur = sequence.getDerniereValeur();
+			derniere_valeur++;
+			String reference = referenceBuilderSetter(annee, sequence, journalCode);
+			updateSequence(derniere_valeur, sequence);
+
+		}else{
+
+			//TODO (perso) corriger la méthode pour mise à jour de la sequence
+			SequenceEcritureComptable sequenceNouvelle = new SequenceEcritureComptable();
+			sequenceNouvelle.setJournalCode(journalCode);
+			sequenceNouvelle.setAnnee(annee);
+			sequenceNouvelle.setDerniereValeur(1);
+			insertSequence(sequenceNouvelle);
+		}
 
 	}
 
@@ -282,6 +292,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		
 		getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(sequence, derniere_valeur);
 		
+	}
+
+	public void insertSequence(SequenceEcritureComptable sequence){
+
+		getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(sequence);
 	}
 	
 	public int getYear(EcritureComptable pEcritureComptable) {
