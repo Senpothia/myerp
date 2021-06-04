@@ -43,19 +43,33 @@ public class EcritureComptableTest {
 		return vRetour;
 	}
 
+	/**
+	 * RG2
+	 * Test d'une ligne d'écriture comptable
+	 * Cas d'une ligne équilibrée
+	 */
 	@Test
 	public void isEquilibreeTrue() {
 
 		Assert.assertTrue(vEcritureEquilibree.toString(), vEcritureEquilibree.isEquilibree());
 
 	}
-
+	/**
+	 * RG2
+	 * Test d'une ligne d'écriture comptable
+	 * Cas d'une ligne non équilibrée
+	 */
 	@Test
 	public void isEquilibreeFalse() {
 
 		Assert.assertFalse(vEcritureNonEquilibree.toString(), vEcritureNonEquilibree.isEquilibree());
 
 	}
+
+	/**
+	 * RG1
+	 * Test de la méthode getTotalCredit
+	 */
 
 	@Test
 	public void getTotalCreditTest() {
@@ -65,6 +79,11 @@ public class EcritureComptableTest {
 		Assert.assertTrue("ok", totalCredit.equals(valReference));
 
 	}
+
+	/**
+	 * RG1
+	 * Test de la méthode getTotalDebit
+	 */
 
 	@Test
 	public void getTotalDebitTest() {

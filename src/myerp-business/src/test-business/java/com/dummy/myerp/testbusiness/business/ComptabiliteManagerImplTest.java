@@ -114,6 +114,32 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 	}
 
+	@Test
+	public void obtenirDerniereValeurSequenceTest(){
+
+		String journal_code = "AC";
+		int annee = 2016;
+		int derniere_valeur = manager.obtenirDerniereValeurSequence(journal_code, annee);
+		System.out.println("Valeur :" + derniere_valeur);
+		int expected_derniere_valeur;
+		List<JournalComptable> journaux = manager.getListJournalComptable();
+		JournalComptable journal = null;
+		boolean finded = false;
+		int i = 0;
+		while (!finded){
+
+			if (journaux.get(i).getCode().equals(journal_code)) {
+				journal = journaux.get(i);
+				finded = true;
+			}
+			i++;
+		}
+		SequenceEcritureComptable sequenceEcritureComptable = manager.findSequence(journal, 2016);
+		expected_derniere_valeur = sequenceEcritureComptable.getDerniereValeur();
+		Assert.assertEquals(expected_derniere_valeur, derniere_valeur);
+
+	}
+
 
 
 }

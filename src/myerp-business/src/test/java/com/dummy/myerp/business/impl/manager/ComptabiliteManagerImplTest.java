@@ -142,6 +142,8 @@ public class ComptabiliteManagerImplTest {
 
 		manager.checkEcritureComptableUnit(vEcritureComptable);
 	}
+
+
 	
 	/*
 	 * L'écriture comptable doit être équilibrée

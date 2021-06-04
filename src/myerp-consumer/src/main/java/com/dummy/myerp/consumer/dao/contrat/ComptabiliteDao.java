@@ -109,4 +109,12 @@ public interface ComptabiliteDao {
 
     void updateSequenceEcritureComptable(SequenceEcritureComptable sequence, int derniere_valeur);
 
+    /**
+     * Permet de récupérer la dernière valeur d'une séquence comptable
+     * @param journal_comptable
+     * @param annee
+     */
+
+    int getDerniereValeurSequence(String journal_code, int annee);
+
 }

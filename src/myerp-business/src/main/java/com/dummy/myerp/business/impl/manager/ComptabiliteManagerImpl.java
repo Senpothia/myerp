@@ -323,4 +323,9 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		return reference;
 		
 	}
+
+	public int obtenirDerniereValeurSequence(String journal_code, int annee){
+
+		return getDaoProxy().getComptabiliteDao().getDerniereValeurSequence(journal_code,annee);
+	}
 }
