@@ -39,7 +39,11 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 		manager = new ComptabiliteManagerImpl();
 	}
-	
+
+	/**
+	 *Test la méthode permettant de récupérer la liste des ecritures comptables
+	 *
+	 */
 	@Test
 	public void obtenirListeEcrituresComptable() {
 
@@ -50,6 +54,10 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 	}
 
+	/**
+	 * Test de la méthode permettant de retrouver une séquence comptable
+	 * à partir d'un journal comptable et d'une année
+	 */
 	@Test
 	public  void getLastSequence(){
 
@@ -80,6 +88,9 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 		Assert.assertTrue(like(expectedSequence,sequence));
 	}
 
+	/**
+	 * Test de la mise à jour d'une séquence comptable en base de données
+	 */
 	@Test
 	public void  updateSequenceEcritureComptableTest(){
 
@@ -114,6 +125,11 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 	}
 
+	/**
+	 * Test de la méthode obtenirDerniereValeurSequence()
+	 * Cette méthode retourne directement la dernière valeur de la séquence
+	 * sans remonter la séquence concernée
+	 */
 	@Test
 	public void obtenirDerniereValeurSequenceTest(){
 
@@ -140,8 +156,11 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 	}
 
+	/**
+	 * Test l'enregistrement d'une nouvelle séquence comptable
+	 */
 	@Test
-	public void saveSequence(){
+	public void saveSequenceTest(){
 
 		SequenceEcritureComptable sequence = new SequenceEcritureComptable();
 		sequence.setDerniereValeur(1);
