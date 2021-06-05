@@ -2,6 +2,7 @@ package com.dummy.myerp.business.impl.manager;
 
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,15 +14,13 @@ import java.util.Date;
 
 import javax.validation.constraints.AssertTrue;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.internal.runners.TestMethod;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.dummy.myerp.business.contrat.BusinessProxy;
@@ -47,6 +46,9 @@ public class ComptabiliteManagerImplExtendedTest {
 
     @Mock
     ComptabiliteDao comptabiliteDao;
+
+    @Captor
+    ArgumentCaptor<SequenceEcritureComptable> captor;
 
 
     ComptabiliteManagerImpl manager;
@@ -88,12 +90,31 @@ public class ComptabiliteManagerImplExtendedTest {
      * avec l'argument sequence retourne par When ThenReturn
      */
     @Test
-    public void invocationFindSequenceMethodTest() {
+    public void invocationFindSequenceMethodSequenceNotNullTest() {
 
         Mockito.when(this.manager.getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee)).thenReturn(sequence);
         manager.addReference(ecriture);
         Mockito.verify(comptabiliteDao).getLastSequence(journal,annee);
-        Mockito.verify(comptabiliteDao).insertSequenceEcritureComptable(sequence);
+        Mockito.verify(comptabiliteDao).updateSequenceEcritureComptable(sequence, sequence.getDerniereValeur());
+    }
+
+    @Test
+    public void invocationFindSequenceMethodSequenceNullTest() {
+
+        Mockito.when(this.manager.getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee)).thenReturn(null);
+        manager.addReference(ecriture);
+        Mockito.verify(comptabiliteDao).getLastSequence(journal,annee);
+        Mockito.verify(comptabiliteDao).insertSequenceEcritureComptable(anyObject());
+        Mockito.verify(comptabiliteDao).insertSequenceEcritureComptable(captor.capture());
+        boolean argumentMatcher = false;
+        SequenceEcritureComptable sequenceArgument = captor.getValue();
+        if (sequenceArgument.getDerniereValeur() == 1
+        && sequenceArgument.getAnnee() == 2014
+        && sequenceArgument.getJournalCode().equals("AC")){
+            argumentMatcher = true;
+        }
+        Assert.assertTrue(argumentMatcher);
+
     }
 
 }

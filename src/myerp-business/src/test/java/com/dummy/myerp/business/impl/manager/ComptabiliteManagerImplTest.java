@@ -151,15 +151,21 @@ public class ComptabiliteManagerImplTest {
 	 * Exception attendue: FunctionalException("L'écriture comptable n'est pas équilibrée.")
 	 */
 
-	@Test(expected = FunctionalException.class)
-	public void checkEcritureComptableUnitRG2() throws Exception {
+	@Test//(expected = FunctionalException.class)
+	public void checkEcritureComptableUnitRG2(){//throws Exception {
 		
 		vEcritureComptable.getListLigneEcriture()
 				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(123), null));
 		vEcritureComptable.getListLigneEcriture()
 				.add(new LigneEcritureComptable(new CompteComptable(2), null, null, new BigDecimal(1234)));
-				
-		manager.checkEcritureComptableUnit(vEcritureComptable);
+
+		try {
+			manager.checkEcritureComptableUnit(vEcritureComptable);
+			Assert.fail("Exception expected but not occured");
+		} catch (FunctionalException e) {
+			//e.printStackTrace();
+			Assert.assertEquals(e.getMessage(), "L'écriture comptable n'est pas équilibrée.");
+		}
 	}
 	
 	/*
