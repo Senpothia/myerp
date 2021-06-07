@@ -50,6 +50,9 @@ public class ComptabiliteManagerImplExtendedTest {
     @Captor
     ArgumentCaptor<SequenceEcritureComptable> captor;
 
+    @Captor
+    ArgumentCaptor<String> referenceCaptor;
+
 
     ComptabiliteManagerImpl manager;
 
@@ -97,11 +100,12 @@ public class ComptabiliteManagerImplExtendedTest {
         Mockito.verify(comptabiliteDao).getLastSequence(journal,annee);
         Mockito.verify(comptabiliteDao).updateSequenceEcritureComptable(sequence, sequence.getDerniereValeur());
         Mockito.verify(comptabiliteDao).updateEcritureComptable(ecriture);
+        Assert.assertEquals("AC-2014/00126", ecriture.getReference());
 
     }
 
     @Test
-    public void invocationFindSequenceMethodSequenceNullTest() {
+    public void invocationDaoMethodsAddRenferenceSequenceNullTest() {
 
         Mockito.when(this.manager.getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee)).thenReturn(null);
         manager.addReference(ecriture);

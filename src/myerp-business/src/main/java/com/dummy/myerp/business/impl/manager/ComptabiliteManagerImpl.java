@@ -89,10 +89,10 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		}else{
 
 			//TODO (perso) corriger la méthode pour mise à jour de la sequence
-			//SequenceEcritureComptable sequenceNouvelle = new SequenceEcritureComptable();
+			sequence = new SequenceEcritureComptable();
 			sequence.setJournalCode(journalCode);
 			sequence.setAnnee(annee);
-			derniere_valeur = 1;
+			derniere_valeur = 0;
 			sequence.setDerniereValeur(derniere_valeur);
 			insertSequence(sequence);
 		}
