@@ -90,12 +90,14 @@ public class ComptabiliteManagerImplExtendedTest {
      * avec l'argument sequence retourne par When ThenReturn
      */
     @Test
-    public void invocationFindSequenceMethodSequenceNotNullTest() {
+    public void invocationDaoMethodsAddRenferenceTest() {
 
         Mockito.when(this.manager.getDaoProxy().getComptabiliteDao().getLastSequence(journal, annee)).thenReturn(sequence);
         manager.addReference(ecriture);
         Mockito.verify(comptabiliteDao).getLastSequence(journal,annee);
         Mockito.verify(comptabiliteDao).updateSequenceEcritureComptable(sequence, sequence.getDerniereValeur());
+        Mockito.verify(comptabiliteDao).updateEcritureComptable(ecriture);
+
     }
 
     @Test

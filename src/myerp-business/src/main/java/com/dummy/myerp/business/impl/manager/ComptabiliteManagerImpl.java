@@ -59,7 +59,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	/**
 	 * {@inheritDoc}
 	 */
-	// TODO à tester (fait - revoir saveSequence()
+	// TODO à tester (fait)
 	@Override
 	public synchronized void addReference(EcritureComptable pEcritureComptable) {
 		// TODO à implémenter (fait)
@@ -70,7 +70,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		 * sequence_ecriture_comptable) 2. * S'il n'y a aucun enregistrement pour le
 		 * journal pour l'année concernée : 1. Utiliser le numéro 1. Sinon : 2. Utiliser
 		 * la dernière valeur + 1 3. Mettre à jour la référence de l'écriture avec la
-		 * référence calculée (RG_Compta_5) 4. Enregistrer (insert/update) la valeur de
+		 * référence calculée (RG_Compta_5: règle de composition de la référence, ex: AC-2012/00012)
+		 *  4. Enregistrer (insert/update) la valeur de
 		 * la séquence en persitance (table sequence_ecriture_comptable)
 		 */
 
@@ -78,20 +79,29 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		int annee = getYear(pEcritureComptable);
 		String journalCode = journal.getCode();
 		SequenceEcritureComptable sequence = findSequence(journal, annee);
+		int derniere_valeur;
 		if (sequence != null){
-			int derniere_valeur = sequence.getDerniereValeur();
+			derniere_valeur = sequence.getDerniereValeur();
 			derniere_valeur++;
-			String reference = referenceBuilderSetter(annee, sequence, journalCode);
+		//String reference = referenceBuilderSetter(annee, sequence, journalCode);
 			updateSequence(derniere_valeur, sequence);
 
 		}else{
 
 			//TODO (perso) corriger la méthode pour mise à jour de la sequence
-			SequenceEcritureComptable sequenceNouvelle = new SequenceEcritureComptable();
-			sequenceNouvelle.setJournalCode(journalCode);
-			sequenceNouvelle.setAnnee(annee);
-			sequenceNouvelle.setDerniereValeur(1);
-			insertSequence(sequenceNouvelle);
+			//SequenceEcritureComptable sequenceNouvelle = new SequenceEcritureComptable();
+			sequence.setJournalCode(journalCode);
+			sequence.setAnnee(annee);
+			derniere_valeur = 1;
+			sequence.setDerniereValeur(derniere_valeur);
+			insertSequence(sequence);
+		}
+		String reference = referenceBuilderSetter(annee, sequence, journalCode);
+		pEcritureComptable.setReference(reference);
+		try {
+			updateEcritureComptable(pEcritureComptable);
+		} catch (FunctionalException e) {
+			e.printStackTrace();
 		}
 
 	}

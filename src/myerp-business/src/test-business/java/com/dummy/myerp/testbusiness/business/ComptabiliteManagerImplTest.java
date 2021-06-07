@@ -172,4 +172,6 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 		manager.insertSequence(sequence);
 	}
 
+	//TODO (perso): vérifier mise à jour de l'écriture compatble avec la référnce calculée
+
 }
