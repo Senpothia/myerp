@@ -1,7 +1,12 @@
 package com.dummy.myerp.testbusiness.business;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
+import com.dummy.myerp.technical.exception.FunctionalException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -15,6 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:bootstrapContext.xml"})
@@ -172,6 +179,71 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 		manager.insertSequence(sequence);
 	}
 
-	//TODO (perso): vérifier mise à jour de l'écriture compatble avec la référnce calculée
+	/**
+	 * Permet de vérifier mise à jour de l'écriture compatble avec la référnce calculée
+	 *
+	 */
+
+	@Test
+	public void updateEcritureComptableTest() throws FunctionalException {
+		/**
+		 * Erreur relevée à la ligne 63 fichier sqlContext.xml: manquait virgule après debit
+		 */
+		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
+		EcritureComptable ecriture = findEcriture("AC", ecritures);
+		String reference = "YY-2000/11111";
+		ecriture.setReference(reference);
+		manager.updateEcritureComptable(ecriture);
+		ecritures = manager.getListEcritureComptable();
+		ecriture = findEcriture("AC", ecritures);
+		Assert.assertEquals("YY-2000/11111", ecriture.getReference());
+
+	}
+
+	private EcritureComptable findEcriture(String code_journal, List<EcritureComptable> ecritures){
+
+		EcritureComptable ecriture = null;
+		boolean finded = false;
+		int i = 0;
+		while (!finded){
+			ecriture = ecritures.get(i);
+			String code = ecriture.getJournal().getCode();
+			if (code.equals(code_journal)){
+				finded = true;
+			}
+			i++;
+		}
+		return ecriture;
+	}
+
+	@Test
+	public void addRefenceTest(){
+
+		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
+		EcritureComptable ecriture = findEcriture("AC", ecritures);
+		String reference = ecriture.getReference();
+		String[] splitTab = reference.split("/");
+		System.out.println(splitTab[1]);
+		int val = Integer.parseInt(splitTab[1]);
+		System.out.println(val);
+		val++;
+		String convertVal = String.valueOf(val);
+		while(convertVal.length()<5){
+			convertVal = "0" + convertVal;
+		}
+		System.out.println(convertVal);
+		String expectedRef = splitTab[0] + "/" + convertVal;
+		System.out.println(expectedRef);
+
+		manager.addReference(ecriture);
+		ecritures = manager.getListEcritureComptable();
+		ecriture = findEcriture("AC", ecritures);
+		reference = ecriture.getReference();
+		Assert.assertEquals(expectedRef,reference);
+
+	}
+
+
+
 
 }
