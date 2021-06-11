@@ -99,7 +99,7 @@ public class ComptabiliteManagerImplExtendedTest {
         manager.addReference(ecriture);
         Mockito.verify(comptabiliteDao).getLastSequence(journal,annee);
         Mockito.verify(comptabiliteDao).updateSequenceEcritureComptable(sequence, sequence.getDerniereValeur());
-        Mockito.verify(comptabiliteDao).updateEcritureComptable(ecriture);
+       // Mockito.verify(comptabiliteDao).updateEcritureComptable(ecriture);
         Assert.assertEquals("AC-2014/00126", ecriture.getReference());
 
     }

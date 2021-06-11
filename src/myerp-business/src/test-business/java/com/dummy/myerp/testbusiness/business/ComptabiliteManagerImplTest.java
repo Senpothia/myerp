@@ -1,11 +1,11 @@
 package com.dummy.myerp.testbusiness.business;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.FunctionalException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,7 +13,6 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,6 +43,53 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 		}
 	}
 
+	/**
+	 * Recherche une écriture comptable dans la liste des écritures
+	 * en fonction d'un journal comptable
+	 *
+	 * @param code_journal
+	 * @param ecritures
+	 * @return EcritureComptable
+	 */
+
+
+	private EcritureComptable findEcriture(String code_journal, String libelle_ecriture, List<EcritureComptable> ecritures){
+
+		EcritureComptable ecriture = null;
+		boolean finded = false;
+		int i = 0;
+		while (!finded){
+			ecriture = ecritures.get(i);
+			String code = ecriture.getJournal().getCode();
+			String libelle = ecriture.getLibelle();
+			if (code.equals(code_journal)
+			&& libelle.equals((libelle_ecriture))){
+				finded = true;
+			}
+			i++;
+		}
+		return ecriture;
+	}
+
+
+
+	private JournalComptable findJournal(List<JournalComptable> journaux, String code_journal){
+
+		JournalComptable journal = null;
+		boolean finded = false;
+		int i = 0;
+		while (!finded){
+
+			if (journaux.get(i).getCode().equals(code_journal)) {
+				journal = journaux.get(i);
+				finded = true;
+			}
+			i++;
+		}
+		return  journal;
+	}
+
+
 	@Before
 	public void setup(){
 
@@ -55,7 +101,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 *
 	 */
 	@Test
-	public void obtenirListeEcrituresComptable() {
+	public void r1_obtenirListeEcrituresComptable() {
 
 		manager = new ComptabiliteManagerImpl();
 		List<JournalComptable> journaux = manager.getListJournalComptable();
@@ -69,7 +115,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 * à partir d'un journal comptable et d'une année
 	 */
 	@Test
-	public  void getLastSequence(){
+	public  void r2_getLastSequence(){
 
 		SequenceEcritureComptable expectedSequence = new SequenceEcritureComptable();
 		expectedSequence.setJournalCode("AC");
@@ -102,7 +148,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 * Test de la mise à jour d'une séquence comptable en base de données
 	 */
 	@Test
-	public void  updateSequenceEcritureComptableTest(){
+	public void  r3_updateSequenceEcritureComptableTest(){
 
 		List<JournalComptable> journaux = manager.getListJournalComptable();
 		System.out.println("taille liste journaux: " + journaux.size());
@@ -141,7 +187,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 * sans remonter la séquence concernée
 	 */
 	@Test
-	public void obtenirDerniereValeurSequenceTest(){
+	public void r4_obtenirDerniereValeurSequenceTest(){
 
 		String journal_code = "AC";
 		int annee = 2016;
@@ -170,7 +216,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 * Test l'enregistrement d'une nouvelle séquence comptable
 	 */
 	@Test
-	public void saveSequenceTest(){
+	public void r5_saveSequenceTest(){
 
 		SequenceEcritureComptable sequence = new SequenceEcritureComptable();
 		sequence.setDerniereValeur(1);
@@ -185,65 +231,72 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 */
 
 	@Test
-	public void updateEcritureComptableTest() throws FunctionalException {
+	public void r6_updateEcritureComptableTest() throws FunctionalException {
 		/**
 		 * Erreur relevée à la ligne 63 fichier sqlContext.xml: manquait virgule après debit
 		 */
 		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
-		EcritureComptable ecriture = findEcriture("AC", ecritures);
+		EcritureComptable ecriture = findEcriture("AC", "Cartouches d’imprimante", ecritures);
 		String reference = "YY-2000/11111";
 		ecriture.setReference(reference);
 		manager.updateEcritureComptable(ecriture);
 		ecritures = manager.getListEcritureComptable();
-		ecriture = findEcriture("AC", ecritures);
+		ecriture = findEcriture("AC", "Cartouches d’imprimante", ecritures);
 		Assert.assertEquals("YY-2000/11111", ecriture.getReference());
 
 	}
 
-	private EcritureComptable findEcriture(String code_journal, List<EcritureComptable> ecritures){
-
-		EcritureComptable ecriture = null;
-		boolean finded = false;
-		int i = 0;
-		while (!finded){
-			ecriture = ecritures.get(i);
-			String code = ecriture.getJournal().getCode();
-			if (code.equals(code_journal)){
-				finded = true;
-			}
-			i++;
-		}
-		return ecriture;
-	}
+	/**
+	 * Test de la méthode chargée d'ajouter une référence à une Ecriture comptable
+	 * dans le cas d'une écriture dont la référence n'est pas nulle
+	 *
+	 */
 
 	@Test
-	public void addRefenceTest(){
+	public void r7_addRefenceRefNotNullTest(){
 
 		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
-		EcritureComptable ecriture = findEcriture("AC", ecritures);
+		EcritureComptable ecriture = findEcriture("BQ", "Paiement Facture F110001", ecritures);
 		String reference = ecriture.getReference();
 		String[] splitTab = reference.split("/");
-		System.out.println(splitTab[1]);
 		int val = Integer.parseInt(splitTab[1]);
-		System.out.println(val);
-		val++;
+		//val++;
 		String convertVal = String.valueOf(val);
 		while(convertVal.length()<5){
 			convertVal = "0" + convertVal;
 		}
-		System.out.println(convertVal);
 		String expectedRef = splitTab[0] + "/" + convertVal;
-		System.out.println(expectedRef);
-
 		manager.addReference(ecriture);
 		ecritures = manager.getListEcritureComptable();
-		ecriture = findEcriture("AC", ecritures);
+		ecriture = findEcriture("BQ", "Paiement Facture F110001", ecritures);
 		reference = ecriture.getReference();
 		Assert.assertEquals(expectedRef,reference);
-
 	}
 
+	/**
+	 * Test de la méthode chargée d'ajouter une référence à une Ecriture comptable
+	 * dans le cas d'une écriture dont la référence est nulle
+	 *
+	 */
+	/*
+	@Test
+	public void r8_addReferenceRefNullTest() throws FunctionalException {
+
+		List<JournalComptable> journaux = manager.getListJournalComptable();
+		JournalComptable journal = findJournal(journaux,"AC");
+		EcritureComptable ecriture = new EcritureComptable();
+		List<LigneEcritureComptable> lignes = ecriture.getListLigneEcriture();
+		ecriture.setJournal(journal);
+		ecriture.setLibelle("test addRefence()");
+		ecriture.setDate(new Date());
+		lignes.add(new LigneEcritureComptable(new CompteComptable(606),null, new BigDecimal(1000),null));
+		lignes.add(new LigneEcritureComptable(new CompteComptable(606),null, null,new BigDecimal(1000)));
+		manager.addReference(ecriture);
+		//manager.insertEcritureComptable(ecriture);
 
 
+
+	}
+	*/
 
 }

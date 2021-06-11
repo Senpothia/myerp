@@ -375,6 +375,14 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>1.10</version>
                 </plugin>
+
+                <!-- ===== Jacoco Sonar===== -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.5</version>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>

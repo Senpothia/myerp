@@ -66,10 +66,12 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		// Bien se réferer à la JavaDoc de cette méthode !
 		/*
 		 * Le principe : 1. Remonter depuis la persitance la dernière valeur de la
-		 * séquence du journal pour l'année de l'écriture (table
-		 * sequence_ecriture_comptable) 2. * S'il n'y a aucun enregistrement pour le
-		 * journal pour l'année concernée : 1. Utiliser le numéro 1. Sinon : 2. Utiliser
-		 * la dernière valeur + 1 3. Mettre à jour la référence de l'écriture avec la
+		 * séquence du journal pour l'année de l'écriture (tablesequence_ecriture_comptable)
+		 * 2. *
+		 *  S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
+		 * 		1. Utiliser le numéro 1.
+		 * 	Sinon : 2. Utiliser la dernière valeur + 1
+		 * 3. Mettre à jour la référence de l'écriture avec la
 		 * référence calculée (RG_Compta_5: règle de composition de la référence, ex: AC-2012/00012)
 		 *  4. Enregistrer (insert/update) la valeur de
 		 * la séquence en persitance (table sequence_ecriture_comptable)
@@ -98,12 +100,14 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 		}
 		String reference = referenceBuilderSetter(annee, sequence, journalCode);
 		pEcritureComptable.setReference(reference);
+
+		/*
 		try {
 			updateEcritureComptable(pEcritureComptable);
 		} catch (FunctionalException e) {
 			e.printStackTrace();
 		}
-
+		*/
 	}
 
 	/**
