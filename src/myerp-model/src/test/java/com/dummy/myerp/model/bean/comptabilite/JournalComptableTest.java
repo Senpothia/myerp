@@ -60,7 +60,6 @@ public class JournalComptableTest {
 		
 		JournalComptable journal = JournalComptable.getByCode(liste2, "axa01");
 		Assert.assertNull(journal);
-	
 	}
 	
 	@Test
@@ -68,7 +67,20 @@ public class JournalComptableTest {
 		
 		JournalComptable journal = JournalComptable.getByCode(liste2, null);
 		Assert.assertNull(journal);
-	
+	}
+
+	@Test
+	public void setLibelleTest(){
+
+		journal1.setLibelle("test libellé");
+		Assert.assertEquals("test libellé", journal1.getLibelle());
+	}
+
+	@Test
+	public void getLibelleTest(){
+
+		String libelle = journal1.getLibelle();
+		Assert.assertEquals("compte AXA", journal1.getLibelle());
 	}
 	
 	
