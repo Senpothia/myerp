@@ -349,5 +349,17 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 
 	}
 
+	@Test
+	public void r93_deleteEcritureComptableTest(){
+
+		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
+		int nombreInitialEcritures = ecritures.size();
+		EcritureComptable ecriture = findEcriture("AC", "Test insertion", ecritures);
+		manager.deleteEcritureComptable(ecriture.getId());
+		List<EcritureComptable> ecrituresApres = manager.getListEcritureComptable();
+		int nombreFinalEcritures = ecrituresApres.size();
+		Assert.assertEquals(nombreInitialEcritures-1, nombreFinalEcritures);
+
+	}
 
 }
