@@ -301,7 +301,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 * @throws Exception
 	 */
 	@Test//(expected = FunctionalException.class)
-	public void checkEcritureComptableRefUniqueRefConforme_RG6() throws Exception {
+	public void r9_checkEcritureComptableRefUniqueRefConforme_RG6() throws Exception {
 
 		//TODO (perso)
 		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
@@ -311,14 +311,41 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	}
 
 	@Test(expected = FunctionalException.class)
-	public void checkEcritureComptableRefUniqueRefExistante_RG6() throws Exception {
+	public void r91_checkEcritureComptableRefUniqueRefExistante_RG6() throws Exception {
 
-		//TODO (perso)
 		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
 		EcritureComptable ecriture = ecritures.get(0);
 		EcritureComptable ecritureAuxiliaire = ecritures.get(1);
 		ecriture.setReference(ecritureAuxiliaire.getReference());
 		manager.checkEcritureComptable(ecriture);
+
+	}
+
+	@Test
+	public void r92_insertEcritureComptableTest(){
+
+		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
+		int nombreInitialEcritures = ecritures.size();
+
+		EcritureComptable ecriture = new EcritureComptable();
+		JournalComptable journal
+				= new JournalComptable("AC", "Achat");
+		ecriture.setJournal(journal);
+		ecriture.setDate(new Date());
+		ecriture.setReference("AC-2020/00100");
+		ecriture.setLibelle("Test insertion");
+		ecriture.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
+		ecriture.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
+
+		int tailleDeLalisteAvantInsert = manager.getListEcritureComptable().size();
+		try {
+			manager.insertEcritureComptable(ecriture);
+		} catch (FunctionalException e) {
+			e.printStackTrace();
+		}
+		List<EcritureComptable> ecrituresApresInsertion = manager.getListEcritureComptable();
+		int nombreEcrituresApres = ecrituresApresInsertion.size();
+		Assert.assertEquals(nombreInitialEcritures+1, nombreEcrituresApres);
 
 	}
 
