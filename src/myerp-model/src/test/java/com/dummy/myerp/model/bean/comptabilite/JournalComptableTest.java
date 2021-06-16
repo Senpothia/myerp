@@ -82,6 +82,14 @@ public class JournalComptableTest {
 		String libelle = journal1.getLibelle();
 		Assert.assertEquals("compte AXA", journal1.getLibelle());
 	}
+
+	@Test
+	public void toStringJournalComptabel(){
+
+		String printedJournal = journal1.toString();
+		System.out.println(printedJournal);
+		Assert.assertEquals("JournalComptable{code='axa01', libelle='compte AXA'}", printedJournal);
+	}
 	
 	
 	

@@ -297,6 +297,8 @@ public class ComptabiliteManagerImplTest {
 		Assert.assertEquals(EXPECTED_REF, reference);
 
 	}
+
+
 	
 
 }

@@ -278,7 +278,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	 * dans le cas d'une écriture dont la référence est nulle
 	 *
 	 */
-	/*
+
 	@Test
 	public void r8_addReferenceRefNullTest() throws FunctionalException {
 
@@ -293,10 +293,34 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 		lignes.add(new LigneEcritureComptable(new CompteComptable(606),null, null,new BigDecimal(1000)));
 		manager.addReference(ecriture);
 		//manager.insertEcritureComptable(ecriture);
+	}
 
+	/**
+	 * On vérifie qu'une ecriture comptable conforme aux règles de gestion ne retourne pas
+	 * d'exception liée à sa référence
+	 * @throws Exception
+	 */
+	@Test//(expected = FunctionalException.class)
+	public void checkEcritureComptableRefUniqueRefConforme_RG6() throws Exception {
 
+		//TODO (perso)
+		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
+		EcritureComptable ecriture = ecritures.get(0);
+		manager.checkEcritureComptable(ecriture);
 
 	}
-	*/
+
+	@Test(expected = FunctionalException.class)
+	public void checkEcritureComptableRefUniqueRefExistante_RG6() throws Exception {
+
+		//TODO (perso)
+		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
+		EcritureComptable ecriture = ecritures.get(0);
+		EcritureComptable ecritureAuxiliaire = ecritures.get(1);
+		ecriture.setReference(ecritureAuxiliaire.getReference());
+		manager.checkEcritureComptable(ecriture);
+
+	}
+
 
 }
