@@ -303,7 +303,6 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 	@Test//(expected = FunctionalException.class)
 	public void r9_checkEcritureComptableRefUniqueRefConforme_RG6() throws Exception {
 
-		//TODO (perso)
 		List<EcritureComptable> ecritures = manager.getListEcritureComptable();
 		EcritureComptable ecriture = ecritures.get(0);
 		manager.checkEcritureComptable(ecriture);

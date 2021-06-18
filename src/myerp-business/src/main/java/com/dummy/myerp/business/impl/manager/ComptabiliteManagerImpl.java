@@ -90,7 +90,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
 		}else{
 
-			//TODO (perso) corriger la méthode pour mise à jour de la sequence
 			sequence = new SequenceEcritureComptable();
 			sequence.setJournalCode(journalCode);
 			sequence.setAnnee(annee);
@@ -106,7 +105,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	/**
 	 * {@inheritDoc}
 	 */
-	// TODO à tester
+
 	@Override
 	public void checkEcritureComptable(EcritureComptable pEcritureComptable) throws FunctionalException {
 		this.checkEcritureComptableUnit(pEcritureComptable);
@@ -207,9 +206,21 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 					// handle exception
 				}
 
+				JournalComptable journal = pEcritureComptable.getJournal();
+				String code_journal = journal.getCode();
+				if (!arrSplit1[0].equals(code_journal)){
+					throw new FunctionalException(
+
+							"La référence de l'écriture comptable doit comporter le code du journal. Exemple: XX-AAAA/#####.");
+
+				}
+
 			} catch (Exception e) {
 				// handle exception
 			}
+
+
+
 		}
 
 	}
