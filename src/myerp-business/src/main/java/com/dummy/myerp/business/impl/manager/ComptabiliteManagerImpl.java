@@ -121,7 +121,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 	 * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les
 	 *                             règles de gestion
 	 */
-	// TODO tests à compléter
+	// TODO tests à compléter (fait)
 	protected void checkEcritureComptableUnit(EcritureComptable pEcritureComptable) throws FunctionalException {
 		// ===== Vérification des contraintes unitaires sur les attributs de l'écriture
 		Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
@@ -159,7 +159,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 					"L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
 		}
 
-		// TODO ===== RG_Compta_5 : Format et contenu de la référence
+		// TODO ===== RG_Compta_5 : Format et contenu de la référence (fait)
 		// vérifier que l'année dans la référence correspond bien à la date de
 		// l'écriture, idem pour le code journal...
 

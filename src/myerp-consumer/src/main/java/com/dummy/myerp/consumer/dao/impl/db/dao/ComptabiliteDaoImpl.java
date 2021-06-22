@@ -424,7 +424,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
 	@Override
 	public int getDerniereValeurSequence(String journal_code, int annee) {
 
-		//TODO (perso) implémenter méthode pour retourner directement la dernière valeur d'une sequence
+
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
 		SqlParameterSource namedParameters = new MapSqlParameterSource()
 				.addValue("journal_code", journal_code)
