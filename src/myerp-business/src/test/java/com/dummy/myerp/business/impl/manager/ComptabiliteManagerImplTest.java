@@ -279,6 +279,7 @@ public class ComptabiliteManagerImplTest {
 	
 	/*
 	 * Test dans le cadre de la vérification de la méthode addReference
+	 * et en rapport avec RG3
 	 */
 	
 	@Test
@@ -291,6 +292,7 @@ public class ComptabiliteManagerImplTest {
 	
 	/*
 	 * Test dans le cadre de la vérification de la méthode addReference
+	 *  et en rapport avec RG3
 	 */
 	
 	@Test
@@ -306,6 +308,7 @@ public class ComptabiliteManagerImplTest {
 
 	/*
 	 * Test dans le cadre de la vérification de la méthode addReference
+	 *  et en rapport avec RG3
 	 */
 
 	@Test
