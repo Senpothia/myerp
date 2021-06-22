@@ -232,7 +232,7 @@ public class ComptabiliteManagerImplTest {
 	 * 
 	 */
 	@Test(expected = FunctionalException.class)
-	public void checkEcritureComptableUnitRG3() throws Exception {
+	public void checkEcritureComptableUnitRG3DeuxLignesAuxCredit() throws Exception {
 		
 		vEcritureComptable.setReference("AC-2010/00121");
 		vEcritureComptable.getListLigneEcriture()
@@ -241,7 +241,25 @@ public class ComptabiliteManagerImplTest {
 				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(123), null));
 		manager.checkEcritureComptableUnit(vEcritureComptable);
 	}
-	
+
+	/*
+	 * Une écriture comptable doit contenir au moins deux lignes d'écriture :
+	 *  une au débit et une au crédit.
+	 *  Ici deux lignes sont au débit
+	 *  L'écriture n'est pas équilibrée.
+	 *  Exception attendue: FunctionalException("L'écriture comptable n'est pas équilibrée."
+	 *
+	 */
+	@Test(expected = FunctionalException.class)
+	public void checkEcritureComptableUnitRG3DeuxLignesAuxDedit() throws Exception {
+
+		vEcritureComptable.setReference("AC-2010/00121");
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,new BigDecimal(123)));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null,null, new BigDecimal(123)));
+		manager.checkEcritureComptableUnit(vEcritureComptable);
+	}
 	/*
 	 * Une écriture comptable doit contenir au moins deux lignes d'écriture :
 	 *  une au débit et une au crédit.
