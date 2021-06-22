@@ -40,16 +40,12 @@ public class ComptabiliteManagerImplExtendedTest {
      BusinessProxy businessProxy;
 
     DaoProxyImpl daoProxy;
-
     @Mock
     TransactionManager transactionManager;
-
     @Mock
     ComptabiliteDao comptabiliteDao;
-
     @Captor
     ArgumentCaptor<SequenceEcritureComptable> captor;
-
     @Captor
     ArgumentCaptor<String> referenceCaptor;
 

@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -295,10 +296,35 @@ public class ComptabiliteManagerImplTest {
 		String reference = manager.referenceBuilderSetter(annee, sequenceNull, code_journal);
 		System.out.println("Reference avec sequence nulle: " + reference);
 		Assert.assertEquals(EXPECTED_REF, reference);
-
 	}
 
 
+	/**
+	 *	RG7
+	 *	Le montant des lignes d'écriture ne peuvent avoir plus de deux chiffres
+	 *	après la virgule
+	 *
+	 * @throws Exception
+	 */
+	@Test(expected = FunctionalException.class)
+	public void checkEcritureComptableUnit_RG7() throws Exception {
+
+		String reference;
+		Date date = vEcritureComptable.getDate();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int annee = calendar.getWeekYear();
+		reference = "AC-" + annee + "/" + "00001";
+		vEcritureComptable.setReference(reference);
+
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1, "AC"), "opération1", new BigDecimal(123.4512), null));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(2, "AC"), "opération1", null, new BigDecimal(123.4512)));
+
+		manager.checkEcritureComptableUnit(vEcritureComptable);
+	}
 	
 
 }
