@@ -331,7 +331,7 @@ public class ComptabiliteManagerImplTest extends BusinessTestCase {
 				= new JournalComptable("AC", "Achat");
 		ecriture.setJournal(journal);
 		ecriture.setDate(new Date());
-		ecriture.setReference("AC-2020/00100");
+		ecriture.setReference("AC-2021/00100");
 		ecriture.setLibelle("Test insertion");
 		ecriture.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(401),null, new BigDecimal(123),null));
 		ecriture.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(411),null, null,new BigDecimal(123)));
