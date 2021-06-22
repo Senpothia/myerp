@@ -232,7 +232,7 @@ public class ComptabiliteManagerImplTest {
 	 * 
 	 */
 	@Test(expected = FunctionalException.class)
-	public void checkEcritureComptableUnitRG3DeuxLignesAuxCredit() throws Exception {
+	public void checkEcritureComptableUnitRG3DeuxLignesAuCredit() throws Exception {
 		
 		vEcritureComptable.setReference("AC-2010/00121");
 		vEcritureComptable.getListLigneEcriture()
@@ -251,7 +251,7 @@ public class ComptabiliteManagerImplTest {
 	 *
 	 */
 	@Test(expected = FunctionalException.class)
-	public void checkEcritureComptableUnitRG3DeuxLignesAuxDedit() throws Exception {
+	public void checkEcritureComptableUnitRG3DeuxLignesAuDebit() throws Exception {
 
 		vEcritureComptable.setReference("AC-2010/00121");
 		vEcritureComptable.getListLigneEcriture()
