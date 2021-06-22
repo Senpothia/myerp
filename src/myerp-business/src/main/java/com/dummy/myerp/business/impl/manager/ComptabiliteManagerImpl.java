@@ -187,11 +187,11 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 			calendar.setTime(date);
 			int annee = calendar.getWeekYear();
 
-			try {
+			//try {
 
 				String[] arrSplit1 = reference.split("-");
 
-				try {
+				//try {
 
 					String[] arrSplit2 = arrSplit1[1].split("/");
 
@@ -201,24 +201,24 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
 
 								"La référence de l'écriture comptable doit comporter l'année. Exemple: XX-AAAA/#####.");
 					}
-
+				/*
 				} catch (Exception e) {
 					// handle exception
 				}
+				*/
 
 				JournalComptable journal = pEcritureComptable.getJournal();
 				String code_journal = journal.getCode();
 				if (!arrSplit1[0].equals(code_journal)){
-					throw new FunctionalException(
-
-							"La référence de l'écriture comptable doit comporter le code du journal. Exemple: XX-AAAA/#####.");
+					throw new FunctionalException("La référence de l'écriture comptable doit comporter le code du journal. Exemple: XX-AAAA/#####.");
 
 				}
 
+				/*
 			} catch (Exception e) {
 				// handle exception
 			}
-
+			*/
 
 
 		}
