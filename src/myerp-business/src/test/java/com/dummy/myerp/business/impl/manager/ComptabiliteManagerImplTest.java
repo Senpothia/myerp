@@ -521,6 +521,65 @@ public class ComptabiliteManagerImplTest {
 		manager.checkEcritureComptableUnit(vEcritureComptable);
 
 	}
-	
+
+	/**
+	 *  RG5:
+	 *  Vérification de conformité de la référence
+	 *  La référence doit être composée avec le code du journal et contenir
+	 *  l'année du journal comptable
+	 *  Ici le code journal n'est pas conforme
+	 */
+
+	@Test(expected = FunctionalException.class)
+	public void checkEcritureComptableUnitRG5_NonConformeCode() throws Exception{
+
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		Date date=null;
+		try {
+			date= df.parse("25-12-2010");
+		} catch (ParseException e){
+			e.printStackTrace();
+		}
+		vJournal.setCode("AC");
+		vJournal.setLibelle("Achat");
+		vEcritureComptable.setJournal(vJournal);
+		vEcritureComptable.setDate(date);
+		vEcritureComptable.setLibelle("Achat outillage");
+		vEcritureComptable.setReference("XX-2010/00121");
+		System.out.println("Date ecr:" + vEcritureComptable.getDate());
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(-123), null));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,  new BigDecimal(-123)));
+		manager.checkEcritureComptableUnit(vEcritureComptable);
+
+	}
+
+	@Test(expected = FunctionalException.class)
+	public void checkEcritureComptableUnitRG5_NonConformeAnnee() throws Exception{
+
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		Date date=null;
+		try {
+			date= df.parse("25-12-2010");
+		} catch (ParseException e){
+			e.printStackTrace();
+		}
+		vJournal.setCode("AC");
+		vJournal.setLibelle("Achat");
+		vEcritureComptable.setJournal(vJournal);
+		vEcritureComptable.setDate(date);
+		vEcritureComptable.setLibelle("Achat outillage");
+		vEcritureComptable.setReference("AC-2020/00121");
+		System.out.println("Date ecr:" + vEcritureComptable.getDate());
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(-123), null));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,  new BigDecimal(-123)));
+		manager.checkEcritureComptableUnit(vEcritureComptable);
+
+	}
+
+
 
 }
