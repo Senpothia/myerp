@@ -286,6 +286,10 @@ public class ComptabiliteManagerImplTest {
 		
 	}
 
+	/*
+	 * Test dans le cadre de la vérification de la méthode addReference
+	 */
+
 	@Test
 	public void referenceBuilderSetterSequenceNulle(){
 
@@ -323,6 +327,22 @@ public class ComptabiliteManagerImplTest {
 		vEcritureComptable.getListLigneEcriture()
 				.add(new LigneEcritureComptable(new CompteComptable(2, "AC"), "opération1", null, new BigDecimal(123.4512)));
 
+		manager.checkEcritureComptableUnit(vEcritureComptable);
+	}
+
+	/**
+	 * 	RG4:
+	 * 	Les montants des lignes d'écritures comptables peuvent prendre des valeurs négatives
+	 *
+	 */
+	@Test//(expected = FunctionalException.class) aucune exception attendue!
+	public void checkEcritureComptableUnitRG4() throws Exception {
+
+		vEcritureComptable.setReference("AC-2010/00121");
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(-123), null));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,  new BigDecimal(-123)));
 		manager.checkEcritureComptableUnit(vEcritureComptable);
 	}
 	
