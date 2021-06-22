@@ -345,6 +345,42 @@ public class ComptabiliteManagerImplTest {
 				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,  new BigDecimal(-123)));
 		manager.checkEcritureComptableUnit(vEcritureComptable);
 	}
+
+	/**
+	 * 	RG4:
+	 * 	Les montants des lignes d'écritures comptables peuvent prendre des valeurs négatives
+	 * 	Vérification du total des montants au crédit
+	 *
+	 */
+	@Test//(expected = FunctionalException.class) aucune exception attendue!
+	public void checkEcritureComptableUnitRG4_TotalCredit() throws Exception {
+
+		vEcritureComptable.setReference("AC-2010/00121");
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(-123), null));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,  new BigDecimal(-123)));
+		Assert.assertEquals(vEcritureComptable.getTotalCredit(), BigDecimal.valueOf(-123));
+
+	}
+
+	/**
+	 * 	RG4:
+	 * 	Les montants des lignes d'écritures comptables peuvent prendre des valeurs négatives
+	 * 	Vérification du total des montants au crédit
+	 *
+	 */
+	@Test//(expected = FunctionalException.class) aucune exception attendue!
+	public void checkEcritureComptableUnitRG4_TotalDebit() throws Exception {
+
+		vEcritureComptable.setReference("AC-2010/00121");
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, new BigDecimal(-123), null));
+		vEcritureComptable.getListLigneEcriture()
+				.add(new LigneEcritureComptable(new CompteComptable(1), null, null,  new BigDecimal(-123)));
+		Assert.assertEquals(vEcritureComptable.getTotalDebit(), BigDecimal.valueOf(-123));
+
+	}
 	
 
 }
